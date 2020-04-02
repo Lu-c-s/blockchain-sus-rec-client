@@ -2,7 +2,7 @@
   "name": "sus-rec",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://Lu-c-s.github.io/blockchain-sus-rec-client", 
+  "homepage": "http://Lu-c-s.github.io/blockchain-sus-rec-client",
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
     "@testing-library/jest-dom": "^4.2.4",
@@ -11,6 +11,7 @@
     "antd": "^4.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1"
   },
   "scripts": {

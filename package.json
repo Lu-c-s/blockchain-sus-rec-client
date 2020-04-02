@@ -2,6 +2,7 @@
   "name": "sus-rec",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://Lu-c-s.github.io/blockchain-sus-rec-client", 
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
     "@testing-library/jest-dom": "^4.2.4",

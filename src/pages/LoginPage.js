@@ -1,8 +1,14 @@
 import React from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import { Switch } from "antd";
 import "./LoginPage.css";
+
+const USER_TYPE = {
+  PATIENT: true,
+  PROVIDER: false
+};
 
 const NormalLoginForm = props => {
   const onFinish = values => {
@@ -35,8 +41,8 @@ const NormalLoginForm = props => {
             style={{ display: "flex", width: "100%", justifyContent: "center" }}
           >
             <Switch
-              checkedChildren="Patient"
-              unCheckedChildren="Provider"
+              checkedChildren="Paciente"
+              unCheckedChildren="Provedor"
               checked={props.currentUser}
               onChange={() => props.setUserType(!props.currentUser)}
             />
@@ -48,7 +54,7 @@ const NormalLoginForm = props => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
+            placeholder="N do CNS"
           />
         </Form.Item>
         <Form.Item
@@ -58,28 +64,32 @@ const NormalLoginForm = props => {
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Password"
+            placeholder="Senha"
           />
         </Form.Item>
         <Form.Item>
           <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>Lembrar-me</Checkbox>
           </Form.Item>
 
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a>
+          <a className="login-form-forgot">Esqueci minha senha</a>
         </Form.Item>
 
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
+          <Link
+            to={`${
+              props.currentUser === USER_TYPE.PATIENT ? "/patient" : "/provider"
+            }`}
           >
-            Log in
-          </Button>
-          Or <a href="">register now!</a>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+            >
+              Log in
+            </Button>
+          </Link>
+          Ou <a href="">Registre-se aqui!</a>
         </Form.Item>
       </Form>
     </div>

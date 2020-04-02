@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import LoginPage from "./pages/LoginPage";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import PatientPage from "./pages/PatientPage";
+import ProviderPage from "./pages/ProviderPage";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 
 const USER_TYPE = {
@@ -13,7 +15,19 @@ function App() {
 
   return (
     <div className="App">
-      <LoginPage setUserType={user => setUser(user)} currentUser={user} />
+      <BrowserRouter>
+        <Switch>
+          <Route path="/patient">
+            <PatientPage />
+          </Route>
+          <Route path="/provider">
+            <ProviderPage />
+          </Route>
+          <Route path="/">
+            <LoginPage setUserType={user => setUser(user)} currentUser={user} />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

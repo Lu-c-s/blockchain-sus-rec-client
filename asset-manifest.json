@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/blockchain-sus-rec-client/static/css/main.d3288665.chunk.css",
-    "main.js": "/blockchain-sus-rec-client/static/js/main.160b5d7a.chunk.js",
-    "main.js.map": "/blockchain-sus-rec-client/static/js/main.160b5d7a.chunk.js.map",
+    "main.css": "/blockchain-sus-rec-client/static/css/main.696201be.chunk.css",
+    "main.js": "/blockchain-sus-rec-client/static/js/main.d802aa27.chunk.js",
+    "main.js.map": "/blockchain-sus-rec-client/static/js/main.d802aa27.chunk.js.map",
     "runtime-main.js": "/blockchain-sus-rec-client/static/js/runtime-main.8eedbeda.js",
     "runtime-main.js.map": "/blockchain-sus-rec-client/static/js/runtime-main.8eedbeda.js.map",
     "static/css/2.ad8fe80d.chunk.css": "/blockchain-sus-rec-client/static/css/2.ad8fe80d.chunk.css",
-    "static/js/2.7c0e1438.chunk.js": "/blockchain-sus-rec-client/static/js/2.7c0e1438.chunk.js",
-    "static/js/2.7c0e1438.chunk.js.map": "/blockchain-sus-rec-client/static/js/2.7c0e1438.chunk.js.map",
+    "static/js/2.36252f3b.chunk.js": "/blockchain-sus-rec-client/static/js/2.36252f3b.chunk.js",
+    "static/js/2.36252f3b.chunk.js.map": "/blockchain-sus-rec-client/static/js/2.36252f3b.chunk.js.map",
     "index.html": "/blockchain-sus-rec-client/index.html",
-    "precache-manifest.9f80846045f460dfb27c477289139c9a.js": "/blockchain-sus-rec-client/precache-manifest.9f80846045f460dfb27c477289139c9a.js",
+    "precache-manifest.55bd781f00622f25434369d46f32af4e.js": "/blockchain-sus-rec-client/precache-manifest.55bd781f00622f25434369d46f32af4e.js",
     "service-worker.js": "/blockchain-sus-rec-client/service-worker.js",
     "static/css/2.ad8fe80d.chunk.css.map": "/blockchain-sus-rec-client/static/css/2.ad8fe80d.chunk.css.map",
-    "static/css/main.d3288665.chunk.css.map": "/blockchain-sus-rec-client/static/css/main.d3288665.chunk.css.map",
-    "static/js/2.7c0e1438.chunk.js.LICENSE.txt": "/blockchain-sus-rec-client/static/js/2.7c0e1438.chunk.js.LICENSE.txt"
+    "static/css/main.696201be.chunk.css.map": "/blockchain-sus-rec-client/static/css/main.696201be.chunk.css.map",
+    "static/js/2.36252f3b.chunk.js.LICENSE.txt": "/blockchain-sus-rec-client/static/js/2.36252f3b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.8eedbeda.js",
     "static/css/2.ad8fe80d.chunk.css",
-    "static/js/2.7c0e1438.chunk.js",
-    "static/css/main.d3288665.chunk.css",
-    "static/js/main.160b5d7a.chunk.js"
+    "static/js/2.36252f3b.chunk.js",
+    "static/css/main.696201be.chunk.css",
+    "static/js/main.d802aa27.chunk.js"
   ]
 }

@@ -1,20 +1,55 @@
-import React from "react";
+import React, { useEffect} from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { Switch } from "antd";
 import "./LoginPage.css";
+import Patient from "../abis/Patient.json";
 
-const USER_TYPE = {
-  PATIENT: true,
-  PROVIDER: false
-};
+const NormalLoginForm = ({ setAccount, account, setPatientData, patientData, ...props}) => {
+  
+  useEffect(() => {
+    (async function loadAllData() {
+      await loadUserAccount();
+      await getPatientData();
+    })();
+  }, []);
 
-const NormalLoginForm = props => {
+  
   const onFinish = values => {
     console.log("Received values of form: ", values);
   };
 
+  const loadUserAccount = async () => {
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    setAccount(accounts ? accounts[0] : null)
+  }
+
+  
+  const getPatientData = async () => {
+    const web3 = window.web3;
+    const networkId = await web3.eth.net.getId();
+    const networkData = Patient.networks[networkId];
+
+    const accounts = await web3.eth.getAccounts();
+    let userAccount = accounts[0]
+
+    if (networkData) {
+      const patientControl = web3.eth.Contract(
+        Patient.abi,
+        networkData.address
+      );
+
+        const patient = await patientControl.methods.patients(userAccount).call();
+        if(patient){
+          setPatientData(patient)          
+        } else {
+
+        }
+        
+      }
+  }
+  console.log(props)
   return (
     <div className="login-page">
       <Form
@@ -34,20 +69,7 @@ const NormalLoginForm = props => {
           }}
         >
           <h1>SusRec</h1>
-        </div>
-
-        <Form.Item name="user">
-          <div
-            style={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            <Switch
-              checkedChildren="Paciente"
-              unCheckedChildren="Provedor"
-              checked={props.currentUser}
-              onChange={() => props.setUserType(!props.currentUser)}
-            />
-          </div>
-        </Form.Item>
+        </div>        
         <Form.Item
           name="username"
           rules={[{ required: true, message: "Please input your Username!" }]}
@@ -78,7 +100,7 @@ const NormalLoginForm = props => {
         <Form.Item>
           <Link
             to={`${
-              props.currentUser === USER_TYPE.PATIENT ? "/patient" : "/provider"
+               "/patient"
             }`}
           >
             <Button

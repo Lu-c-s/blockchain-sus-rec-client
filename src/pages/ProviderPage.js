@@ -1,22 +1,55 @@
 import React, { useState } from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
+import Patient from "../abis/Patient.json";
 
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
-const ProviderPage = (props) => {
+const ProviderPage = ({ account , ...props}) => {
   const [Collapsed, setCollapsed] = useState(false);
+  
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
+  const createUserAccount = async () => {
+    const web3 = window.web3;
+
+    const createdAccount = await web3.eth.accounts.create()
+    console.log("created account",createdAccount)
+    return createdAccount;
+    
+  }
+
+  const signToPatientContract = async (data) => {
+    const web3 = window.web3;
+    const networkId = await web3.eth.net.getId();
+    const networkData = Patient.networks[networkId];
+
+    if (networkData) {
+      const patientControl = web3.eth.Contract(
+        Patient.abi,
+        networkData.address
+      );
+      const { name,cpf } = data
+
+      patientControl.methods
+      .addPatient(account, name,cpf)
+      .send({ from: account })
+      .once("receipt", (receipt) => {
+        console.log("receipt",receipt)        
+      });
+    }
+  }
+
+  const createPatient = async (data) => {
+   // let account = await createUserAccount()
+    await signToPatientContract(data)
+  }
+
 
   return (
     <Layout style={{ minHeight: "100vh" }}>

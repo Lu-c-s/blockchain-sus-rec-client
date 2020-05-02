@@ -1,33 +1,31 @@
 pragma solidity ^0.5.0;
 
 contract Patient{
-    uint public patientCount = 0;
-    address[] newPatients;
-
-    mapping(uint => PatientInfo) public patients;
+    mapping(address => PatientInfo) public patients;
 
     struct PatientInfo {
-        uint id;
         string name;
         string cpf;
-        address ownerAddress;
+        bool set;
     }
 
     event PatientCreated(
-        uint id,
         string name,
         string cpf,
-        address ownerAddress
+        bool set
     );
 
-    function addPatient(string memory _name, string memory _cpf) public {
-        // Require a valid name
-        require(bytes(_name).length > 0);
-        patientCount ++;
+    function addPatient(address _userAddress, string memory _name, string memory _cpf) public {
+        PatientInfo storage patient = patients[_userAddress];
+        require(!patient.set);
         // Create the product
-        patients[patientCount] = PatientInfo(patientCount, _name,_cpf,msg.sender);
+        patients[_userAddress] = PatientInfo({
+            name: _name,
+            cpf: _cpf,
+            set: true
+        });
         // Trigger an event
-        emit PatientCreated(patientCount, _name, _cpf, msg.sender);
+        emit PatientCreated(_name, _cpf, true);
     }
 
 }

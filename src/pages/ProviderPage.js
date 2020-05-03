@@ -1,55 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
 import {
-  DesktopOutlined,
   PieChartOutlined,
 } from "@ant-design/icons";
-import Patient from "../abis/Patient.json";
+import { Button } from "antd";
+import Web3 from "web3";
+import System from "../abis/System.json";
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const ProviderPage = ({ account , ...props}) => {
   const [Collapsed, setCollapsed] = useState(false);
-  
+
+  useEffect(() => {
+    (async function loadAllData() {
+      await loadWeb3();    
+    })();
+  }, []);
+
+  const loadWeb3 = async () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  };
+
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
+  
   const createUserAccount = async () => {
     const web3 = window.web3;
-
     const createdAccount = await web3.eth.accounts.create()
-    console.log("created account",createdAccount)
     return createdAccount;
-    
   }
 
-  const signToPatientContract = async (data) => {
+  const signToPatientContract = async (userAddress, data) => {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
-    const networkData = Patient.networks[networkId];
+    const networkData = System.networks[networkId];
+    const accounts = await web3.eth.getAccounts();
 
     if (networkData) {
-      const patientControl = web3.eth.Contract(
-        Patient.abi,
+      const patientFactory = web3.eth.Contract(
+        System.abi,
         networkData.address
       );
-      const { name,cpf } = data
 
-      patientControl.methods
-      .addPatient(account, name,cpf)
-      .send({ from: account })
+      console.log(patientFactory)
+
+      patientFactory.methods
+      .AdicionarPaciente(accounts[0],"Leticia")
+      .send({ from: accounts[0] })
       .once("receipt", (receipt) => {
         console.log("receipt",receipt)        
       });
     }
   }
 
-  const createPatient = async (data) => {
-   // let account = await createUserAccount()
-    await signToPatientContract(data)
+  const createNewPatient = async (data) => {
+    //let account = await createUserAccount()
+    await signToPatientContract("",data)
   }
 
+  const getPatientInfo = async () => {
+    const web3 = window.web3;
+    const networkId = await web3.eth.net.getId();
+    const networkData = System.networks[networkId];
+    const accounts = await web3.eth.getAccounts();
+
+    if (networkData) {
+      const patientControl = new web3.eth.Contract(
+        System.abi,
+        networkData.address
+      );
+  
+      //let info = await patientControl.methods
+      //.addName("sakura").send({ from : accounts[0]});
+      
+      //console.log(info)
+
+      let userName = await patientControl.methods
+      .pacientes(accounts[0]).call();
+
+      console.log("usr",userName)
+    }
+  }
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -58,12 +102,8 @@ const ProviderPage = ({ account , ...props}) => {
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
             <PieChartOutlined />
-            <span>Dados pessoais</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <DesktopOutlined />
-            <span>Registros</span>
-          </Menu.Item>
+            <span>Adicionar paciente</span>
+          </Menu.Item>          
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -74,6 +114,8 @@ const ProviderPage = ({ account , ...props}) => {
             style={{ padding: 24, minHeight: 360 }}
           >
             Patient Data
+            <Button onClick={createNewPatient}>Criar novo paciente</Button>
+            <Button onClick={getPatientInfo}>Information</Button>
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

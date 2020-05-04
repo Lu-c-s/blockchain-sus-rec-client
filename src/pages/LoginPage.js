@@ -4,11 +4,18 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import "./LoginPage.css";
-import Patient from "../abis/Patient.json";
+import Portis from '@portis/web3';
+
 
 const NormalLoginForm = (props) => {
-  const [account, setAccount] = useState(null);
-  const [patientData, setPatientData] = useState(null) 
+
+  const ganacheNode = {
+    nodeUrl: 'https://localhost:7545',
+    chainId: 5777,
+  };
+  
+  const portis = new Portis('4b237b61-fc07-4bbb-9e7c-517aceef660e', ganacheNode);
+  const web3 = new Web3(portis.provider);
 
   useEffect(() => {
     (async function loadAllData() {

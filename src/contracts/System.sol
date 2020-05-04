@@ -14,6 +14,12 @@ contract System {
 
     mapping(address => Paciente) public pacientes;
 
+    event PacienteCriado(
+        address userAddress,
+        Prontuario userProntuario
+    );
+
+
     function AdicionarPaciente(address _userAddress, string memory _userName) public {
         Paciente storage pc = pacientes[_userAddress];
         // Check that the user did not already exist:
@@ -22,13 +28,8 @@ contract System {
         pc.userAddress = _userAddress;
         pc.set = true;
         pc.userProntuario = Prontuario(_userName);
-        
-        //Prontuario memory p = Prontuario(_userName);
-        //Store the user
-        /*pacientes[_userAddress] = Paciente({
-            userAddress: _userAddress,
-            userProntuario: p,
-            set: true
-        });*/
+
+        emit PacienteCriado(pc.userAddress, pc.userProntuario);
+       
     }
 }

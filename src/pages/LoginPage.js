@@ -4,24 +4,24 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import "./LoginPage.css";
-import Portis from '@portis/web3';
-
+import Portis from "@portis/web3";
+import System from "../abis/System.json";
 
 const NormalLoginForm = (props) => {
-
   const ganacheNode = {
-    nodeUrl: 'https://localhost:7545',
+    nodeUrl: "https://localhost:7545",
     chainId: 5777,
   };
-  
-  const portis = new Portis('4b237b61-fc07-4bbb-9e7c-517aceef660e', ganacheNode);
-  const web3 = new Web3(portis.provider);
+
+  /*const portis = new Portis(
+    "4b237b61-fc07-4bbb-9e7c-517aceef660e",
+    ganacheNode
+  );
+  const web3 = new Web3(portis.provider);*/
 
   useEffect(() => {
     (async function loadAllData() {
-      await loadWeb3();    
-      //await loadUserAccount();  
-      await getPatientData();
+      await loadWeb3();
     })();
   }, []);
 
@@ -38,59 +38,26 @@ const NormalLoginForm = (props) => {
     }
   };
 
-
   const loadUserAccount = async () => {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     return accounts[0];
-  }
-
-
-  const getPatientData = async () => {
-    const web3 = window.web3;
-    const networkId = await web3.eth.net.getId();
-    const networkData = Patient.networks[networkId];
-    const account = await loadUserAccount();
-
-    if (networkData) {
-      const patientControl = web3.eth.Contract(
-        Patient.abi,
-        networkData.address
-      );
-    
-        const addInfo = await patientControl.methods.addPacient(1, "teste").call()
-        console.log(addInfo)
-
-
-     //const addProntuario = await patientControl.methods.prontuarios(0).call()
-      //console.log(addProntuario)
-
-   //   console.log(patientControl.methods.patients(account).call())
-
-       // const patient = await patientControl.methods.addPatient(account, "TESTE").call();
-        //console.log(patient)
-
-        //if(patient){
-         // setPatientData(patient)          
-        //} 
-      }
-  }
+  };
 
   return (
     <div className="login-page">
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-            position: "absolute",
-            top: 50,
-            left: 0
-          }}
-        >
-          <h1>SusRec</h1>
-        </div>        
-   
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          position: "absolute",
+          top: 50,
+          left: 0,
+        }}
+      >
+        <h1>SusRec</h1>
+      </div>
     </div>
   );
 };

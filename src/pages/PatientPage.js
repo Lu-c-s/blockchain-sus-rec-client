@@ -1,23 +1,58 @@
-import React, { useState } from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Layout, Menu } from "antd";
+import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import Web3 from "web3";
+import System from "../abis/System.json";
 
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
 const PatientPage = (props) => {
   const [Collapsed, setCollapsed] = useState(false);
+  const [patientData, setPatientData] = useState();
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
 
+  useEffect(() => {
+    (async function loadAllData() {
+      await loadWeb3();
+      await getPatientInfo();
+    })();
+  }, []);
+
+  const loadWeb3 = async () => {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
+    }
+  };
+
+  const getPatientInfo = async () => {
+    const web3 = window.web3;
+    const networkId = await web3.eth.net.getId();
+    const networkData = System.networks[networkId];
+    const accounts = await web3.eth.getAccounts();
+
+    if (networkData) {
+      const patientControl = new web3.eth.Contract(
+        System.abi,
+        networkData.address
+      );
+
+      let data = await patientControl.methods.pacientes(accounts[0]).call();
+      setPatientData(data);
+    }
+  };
+
+  console.log(patientData);
+  const { userProntuario } = patientData || {};
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={Collapsed} onCollapse={onCollapse}>
@@ -27,10 +62,10 @@ const PatientPage = (props) => {
             <PieChartOutlined />
             <span>Dados pessoais</span>
           </Menu.Item>
-          <Menu.Item key="2">
+          {/*<Menu.Item onClick={() => alert("Em desenvolvimento")}>
             <DesktopOutlined />
             <span>Registros médicos</span>
-          </Menu.Item>
+          </Menu.Item>*/}
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -40,7 +75,7 @@ const PatientPage = (props) => {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            Bill is a cat.
+            Nome:{userProntuario ? userProntuario.name : ""}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

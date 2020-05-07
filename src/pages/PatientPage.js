@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Button } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import Web3 from "web3";
 import System from "../abis/System.json";
+import EthCrypto from "eth-crypto";
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const PatientPage = (props) => {
   const [Collapsed, setCollapsed] = useState(false);
-  const [patientData, setPatientData] = useState();
+  const [patientData, setPatientData] = useState({});
+  const [key, setKey] = useState("");
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
@@ -38,7 +40,6 @@ const PatientPage = (props) => {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
     const networkData = System.networks[networkId];
-    const accounts = await web3.eth.getAccounts();
 
     if (networkData) {
       const patientControl = new web3.eth.Contract(
@@ -46,13 +47,38 @@ const PatientPage = (props) => {
         networkData.address
       );
 
-      let data = await patientControl.methods.pacientes(accounts[0]).call();
-      setPatientData(data);
+      if (key) {
+        const publicKey = await EthCrypto.publicKeyByPrivateKey(key);
+        const toAddress = EthCrypto.publicKey.toAddress(publicKey);
+        let data = await patientControl.methods.pacientes(toAddress).call();
+        let { userProntuario } = data;
+
+        for (let field in userProntuario) {
+          if (
+            userProntuario.hasOwnProperty(field) &&
+            !Number.isInteger(+field)
+          ) {
+            userProntuario[field] = await decryptData(
+              key,
+              userProntuario[field]
+            );
+          } else {
+            delete userProntuario[field];
+          }
+        }
+        setPatientData(userProntuario);
+      }
     }
   };
 
-  console.log(patientData);
-  const { userProntuario } = patientData || {};
+  const decryptData = async (privateKey, data) => {
+    // get the encrypted object
+    let ParsedData = EthCrypto.cipher.parse(data);
+
+    //Decrypt the object using the private key
+    return await EthCrypto.decryptWithPrivateKey(privateKey, ParsedData);
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={Collapsed} onCollapse={onCollapse}>
@@ -62,10 +88,6 @@ const PatientPage = (props) => {
             <PieChartOutlined />
             <span>Dados pessoais</span>
           </Menu.Item>
-          {/*<Menu.Item onClick={() => alert("Em desenvolvimento")}>
-            <DesktopOutlined />
-            <span>Registros médicos</span>
-          </Menu.Item>*/}
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -75,12 +97,26 @@ const PatientPage = (props) => {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            Nome:{userProntuario ? userProntuario.name : ""}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p>Chave privada</p>
+              <input
+                value={key}
+                style={{ width: 500 }}
+                onChange={(event) => setKey(event.target.value)}
+              />
+              <Button
+                style={{ width: 70, marginTop: 20 }}
+                onClick={getPatientInfo}
+              >
+                Entrar
+              </Button>
+              {patientData && Object.keys(patientData).length !== 0 ? (
+                <p>Name: {patientData.name}</p>
+              ) : null}
+            </div>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
+        <Footer></Footer>
       </Layout>
     </Layout>
   );

@@ -16,6 +16,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import Web3 from "web3";
 import System from "../abis/System.json";
+import EthCrypto from "eth-crypto";
 
 const { Header, Content, Footer, Sider } = Layout;
 const formItemLayout = {
@@ -41,8 +42,9 @@ const tailFormItemLayout = {
   },
 };
 
-const ProviderPage = ({ account, ...props }) => {
+const ProviderPage = ({ ...props }) => {
   const [Collapsed, setCollapsed] = useState(false);
+  const [account, setAccount] = useState("");
 
   useEffect(() => {
     (async function loadAllData() {
@@ -67,39 +69,56 @@ const ProviderPage = ({ account, ...props }) => {
     setCollapsed(collapsed);
   };
 
-  const createUserAccount = async () => {
-    const web3 = window.web3;
-    const createdAccount = await web3.eth.accounts.create();
-    return createdAccount;
+  const encryptData = async (publicKey, data) => {
+    //Encrypt data using the public key
+    let encrypted = await EthCrypto.encryptWithPublicKey(publicKey, data);
+
+    //return the message as one string
+    return EthCrypto.cipher.stringify(encrypted);
   };
 
-  const signToPatientContract = async () => {
+  const signToPatientContract = async (values) => {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
     const networkData = System.networks[networkId];
     const accounts = await web3.eth.getAccounts();
 
+    //Create a new public/private key pair
+    const newAccount = web3.eth.accounts.create();
+
+    const userPublicKey = EthCrypto.publicKeyByPrivateKey(
+      newAccount.privateKey
+    );
+
+    setAccount({
+      publicKey: userPublicKey,
+      privateKey: newAccount.privateKey,
+    });
+
+    console.log(values);
+    //Encrypt all objects from values object
+    for (var key in values) {
+      if (values.hasOwnProperty(key)) {
+        values[key] = await encryptData(userPublicKey, values[key]);
+      }
+    }
+
+    console.log("encrypted Data", values);
+
     if (networkData) {
       const patientFactory = web3.eth.Contract(System.abi, networkData.address);
-
       patientFactory.methods
-        .AdicionarPaciente(accounts[0])
-        .send({ from: accounts[0] })
+        .AdicionarPaciente(newAccount.address, values.name)
+        .send({
+          from: accounts[0],
+        })
         .once("receipt", (receipt) => {
           console.log("receipt", receipt);
         });
     }
   };
 
-  const createNewPatient = async (data) => {
-    //let account = await createUserAccount()
-    await signToPatientContract("", data);
-  };
   const [form] = Form.useForm();
-
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -122,24 +141,22 @@ const ProviderPage = ({ account, ...props }) => {
               {...formItemLayout}
               form={form}
               name="register"
-              onFinish={onFinish}
+              onFinish={signToPatientContract}
               scrollToFirstError
             >
               <Form.Item
-                name="nickname"
+                name="name"
                 label={<span>Nome completo&nbsp;</span>}
                 rules={[
                   {
                     required: true,
-                    message: "Please input your nickname!",
-                    whitespace: true,
                   },
                 ]}
               >
                 <Input />
               </Form.Item>
 
-              <Form.Item
+              {/*}<Form.Item
                 name="cpf"
                 label="CPF"
                 rules={[
@@ -152,7 +169,7 @@ const ProviderPage = ({ account, ...props }) => {
                 <Input style={{ width: "100%" }} />
               </Form.Item>
 
-              {/*} <Form.Item
+              <Form.Item
                 name="rg"
                 label="RG"
                 rules={[
@@ -288,6 +305,11 @@ const ProviderPage = ({ account, ...props }) => {
                 </Button>
               </Form.Item>
             </Form>
+          </div>
+          <div>
+            <h2>Generated Keys: </h2>
+            <p>public = {account.publicKey}</p>
+            <p>private = {account.privateKey}</p>
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}></Footer>

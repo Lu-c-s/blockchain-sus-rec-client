@@ -108,7 +108,7 @@ const ProviderPage = ({ ...props }) => {
     if (networkData) {
       const patientFactory = web3.eth.Contract(System.abi, networkData.address);
       patientFactory.methods
-        .AdicionarPaciente(newAccount.address, values.name)
+        .AdicionarPaciente(newAccount.address, values.name, values.cpf)
         .send({
           from: accounts[0],
         })
@@ -144,31 +144,39 @@ const ProviderPage = ({ ...props }) => {
               onFinish={signToPatientContract}
               scrollToFirstError
             >
-              <Form.Item
-                name="name"
-                label={<span>Nome completo&nbsp;</span>}
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-              >
+              <Form.Item name="name" label={<span>Nome completo&nbsp;</span>}>
                 <Input />
               </Form.Item>
 
-              {/*}<Form.Item
-                name="cpf"
-                label="CPF"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="cpf" label="CPF">
+                <Input style={{ width: "70%" }} />
+              </Form.Item>
+
+              <Form.Item name="rg" label="RG">
+                <Input style={{ width: "70%" }} />
+              </Form.Item>
+
+              <Form.Item name="nome_social" label="Nome Social">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
 
+              <Form.Item name="dt_nasc" label="Data de Nascimento">
+                <Input style={{ width: "50%" }} />
+              </Form.Item>
+
+              <Form.Item name="sexo" label="Sexo">
+                <Input style={{ width: "50%" }} />
+              </Form.Item>
+
+              <Form.Item name="cor_raca" label="Cor/Raça">
+                <Input style={{ width: "50%" }} />
+              </Form.Item>
+
+              <Form.Item name="nacionalidade" label="Nacionalidade">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+
+              {/*}
               <Form.Item
                 name="rg"
                 label="RG"

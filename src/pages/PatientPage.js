@@ -50,13 +50,15 @@ const PatientPage = (props) => {
       if (key) {
         const publicKey = await EthCrypto.publicKeyByPrivateKey(key);
         const toAddress = EthCrypto.publicKey.toAddress(publicKey);
+        debugger;
         let data = await patientControl.methods.pacientes(toAddress).call();
         let { userProntuario } = data;
-
+        console.log(userProntuario);
         for (let field in userProntuario) {
           if (
             userProntuario.hasOwnProperty(field) &&
-            !Number.isInteger(+field)
+            !Number.isInteger(+field) &&
+            userProntuario[field] !== ""
           ) {
             userProntuario[field] = await decryptData(
               key,
@@ -72,6 +74,7 @@ const PatientPage = (props) => {
   };
 
   const decryptData = async (privateKey, data) => {
+    debugger;
     // get the encrypted object
     let ParsedData = EthCrypto.cipher.parse(data);
 
@@ -111,7 +114,10 @@ const PatientPage = (props) => {
                 Entrar
               </Button>
               {patientData && Object.keys(patientData).length !== 0 ? (
-                <p>Name: {patientData.name}</p>
+                <>
+                  <p>Name: {patientData.name}</p>
+                  <p>Cpf: {patientData.cpf}</p>
+                </>
               ) : null}
             </div>
           </div>

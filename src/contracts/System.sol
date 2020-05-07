@@ -19,8 +19,6 @@ contract System {
         string identidade_de_genero;
         string cep; 
         string estado; 
-
-        
         string bairro; 
         string logradouro;
         string numero; 
@@ -28,7 +26,6 @@ contract System {
         string referencia;
         string area;
         string microarea;
-
         string nome_da_mae;
         string nome_do_pai;
         string estado_civil;
@@ -121,9 +118,9 @@ contract System {
         string memory _estado_civil,
         string memory _NIS_PIS_PASEP,
         string memory _n_prontuario,
-        string memory _ocupacao, 
+        string memory _ocupacao,
         string memory _escolaridade,
-        string memory _tipo_sanguineo 
+        string memory _tipo_sanguineo
        ) public {
         Paciente storage pc = pacientes[_userAddress];
         pc.userAddress = _userAddress;

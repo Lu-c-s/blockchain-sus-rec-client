@@ -94,8 +94,6 @@ const ProviderPage = ({ ...props }) => {
       publicKey: userPublicKey,
       privateKey: newAccount.privateKey,
     });
-
-    console.log(values);
     //Encrypt all objects from values object
     for (var key in values) {
       if (values.hasOwnProperty(key)) {
@@ -103,18 +101,102 @@ const ProviderPage = ({ ...props }) => {
       }
     }
 
-    console.log("encrypted Data", values);
-
     if (networkData) {
+      debugger;
       const patientFactory = web3.eth.Contract(System.abi, networkData.address);
       patientFactory.methods
-        .AdicionarPaciente(newAccount.address, values.name, values.cpf)
+        .AdicionarPaciente(
+          newAccount.address,
+          values.name,
+          values.cpf,
+          values.rg,
+          values.nome_social,
+          values.dt_nasc,
+          values.sexo,
+          values.cor_raca,
+          values.nacionalidade
+        )
         .send({
           from: accounts[0],
         })
         .once("receipt", (receipt) => {
           console.log("receipt", receipt);
         });
+
+      const patientFactory2 = web3.eth.Contract(
+        System.abi,
+        networkData.address
+      );
+      patientFactory.methods
+        .AdicionarPacientePersonal2(
+          newAccount.address,
+          values.municipio,
+          values.telefone,
+          values.email,
+          values.pais,
+          values.cep,
+          values.estado,
+          values.orientacao_sexual,
+          values.identidade_de_genero
+        )
+        .send({
+          from: accounts[0],
+        })
+        .once("receipt", (receipt) => {
+          console.log("receipt", receipt);
+        });
+
+      const patientFactory3 = web3.eth.Contract(
+        System.abi,
+        networkData.address
+      );
+      patientFactory.methods
+        .AdicionarPacienteAddress1(
+          newAccount.address,
+          values.bairro,
+          values.lougradouro,
+          values.numero,
+          values.complemento,
+          values.referencia,
+          values.area,
+          values.microarea
+        )
+        .send({
+          from: accounts[0],
+        })
+        .once("receipt", (receipt) => {
+          console.log("receipt", receipt);
+        });
+
+      const patientFactory4 = web3.eth.Contract(
+        System.abi,
+        networkData.address
+      );
+      patientFactory.methods
+        .AdicionarPacienteOthers(
+          newAccount.address,
+          values.nome_da_mae,
+          values.nome_do_pai,
+          values.estado_civil,
+          values.NIS_PIS_PASEP,
+          "465846546", // Número do prontuario vindo do CADSUS
+          values.ocupacao,
+          values.escolaridade,
+          values.tipo_sanguineo
+        )
+        .send({
+          from: accounts[0],
+        })
+        .once("receipt", (receipt) => {
+          console.log("receipt", receipt);
+        });
+
+      console.log(
+        patientFactory,
+        patientFactory2,
+        patientFactory3,
+        patientFactory4
+      );
     }
   };
 
@@ -126,6 +208,7 @@ const ProviderPage = ({ ...props }) => {
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
+            <QuestionCircleOutlined />
             <span>Adicionar paciente</span>
           </Menu.Item>
         </Menu>
@@ -144,169 +227,101 @@ const ProviderPage = ({ ...props }) => {
               onFinish={signToPatientContract}
               scrollToFirstError
             >
+              Dados Pessoais
               <Form.Item name="name" label={<span>Nome completo&nbsp;</span>}>
                 <Input />
               </Form.Item>
-
               <Form.Item name="cpf" label="CPF">
                 <Input style={{ width: "70%" }} />
               </Form.Item>
-
               <Form.Item name="rg" label="RG">
                 <Input style={{ width: "70%" }} />
               </Form.Item>
-
               <Form.Item name="nome_social" label="Nome Social">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
               <Form.Item name="dt_nasc" label="Data de Nascimento">
                 <Input style={{ width: "50%" }} />
               </Form.Item>
-
               <Form.Item name="sexo" label="Sexo">
                 <Input style={{ width: "50%" }} />
               </Form.Item>
-
               <Form.Item name="cor_raca" label="Cor/Raça">
                 <Input style={{ width: "50%" }} />
               </Form.Item>
-
               <Form.Item name="nacionalidade" label="Nacionalidade">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              {/*}
+              <Form.Item name="telefone" label="Telefone">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="email" label="E-mail">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="orientacao_sexual" label="Orientação sexual">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
               <Form.Item
-                name="rg"
-                label="RG"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
+                name="identidade_de_genero"
+                label="Identidade de gênero"
               >
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="endereço"
-                label="Endereço"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select your habitual residence!",
-                  },
-                ]}
-              >
+              <Form.Item name="nome_da_mae" label="Nome da mãe">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="phone"
-                label="Phone Number"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="nome_do_pai" label="Nome do pai">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="sexo"
-                label="Sexo"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="estado_civil" label="Estado civil">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="dt_nasc"
-                label="Data de nascimento"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="NIS_PIS_PASEP" label="Número do NIS/PIS/PASEP">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="cor"
-                label="Cor/raça"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="ocupacão" label="Ocupação">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="mother_name"
-                label="Nome da mãe"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="escolaridade" label="Escolaridade">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="father_name"
-                label="Nome do pai"
-                rules={[
-                  {
-                    required: false,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="tipo_sanguineo" label="Tipo Sanguineo">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="nacionality"
-                label="Nacionalidade"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              Endereço
+              <Form.Item name="pais" label="País">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-
-              <Form.Item
-                name="municipio"
-                label="Munícipio"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your phone number!",
-                  },
-                ]}
-              >
+              <Form.Item name="municipio" label="Municipio">
                 <Input style={{ width: "100%" }} />
-              </Form.Item>*/}
-
+              </Form.Item>
+              <Form.Item name="estado" label="Estado">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="bairro" label="Bairro">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="logradouro" label="Logradouro">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="numero" label="Número">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="cep" label="CEP">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="complemento" label="Complemento">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="referencia" label="Referência">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="area" label="Área">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item name="microarea" label="Microárea">
+                <Input style={{ width: "100%" }} />
+              </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">
                   Registar novo paciente

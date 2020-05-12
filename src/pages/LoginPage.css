@@ -1,24 +1,24 @@
-
-.login-page{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #74b9ff;
 }
 
 .login-page .login-form {
-    max-width: 300px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .login-page .login-form-forgot {
-    float: right;
-  }
-  .login-page .ant-col-rtl .login-form-forgot {
-    float: left;
-  }
-  .login-page .login-form-button {
-    width: 100%;
-  }
+  max-width: 300px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-page .login-form-forgot {
+  float: right;
+}
+.login-page .ant-col-rtl .login-form-forgot {
+  float: left;
+}
+.login-page .login-form-button {
+  width: 100%;
+}

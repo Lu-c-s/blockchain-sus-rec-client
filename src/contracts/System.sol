@@ -136,32 +136,3 @@ contract System {
     }
 
 }
-
-/* 
-
- string memory _nome_da_mae,
-        string memory _nome_do_pai,
-        
-        string memory _municipio,
-        string memory _rg,
-        string memory _telefone,
-        string memory _email,
-        string memory _pais,
-        string memory _cep,
-        string memory _estado,
-        string memory _bairro,
-        string memory _logradouro,
-        string memory _numero,
-        string memory _complemento,
-        string memory _referencia,
-        string memory _area,
-        string memory _microarea,
-        string memory _estado_civil,
-        string memory _NIS_PIS_PASEP,
-        string memory _n_prontuario,
-        string memory _ocupacao,
-        string memory _escolaridade,
-        string memory _tipo_sanguineo,
-        string memory _orientacao_sexual,
-        string memory _identidade_de_genero
-*/

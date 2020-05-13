@@ -53,7 +53,7 @@ const PatientPage = (props) => {
         debugger;
         let data = await patientControl.methods.pacientes(toAddress).call();
         let { userProntuario } = data;
-        console.log(userProntuario);
+
         for (let field in userProntuario) {
           if (
             userProntuario.hasOwnProperty(field) &&
@@ -74,7 +74,7 @@ const PatientPage = (props) => {
   };
 
   const decryptData = async (privateKey, data) => {
-    debugger;
+    console.log("field data", data);
     // get the encrypted object
     let ParsedData = EthCrypto.cipher.parse(data);
 

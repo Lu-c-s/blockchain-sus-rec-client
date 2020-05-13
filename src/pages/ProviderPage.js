@@ -101,11 +101,13 @@ const ProviderPage = ({ ...props }) => {
       }
     }
 
+    const nDoProntuario = await encryptData(userPublicKey, "XXXXXXXXXXX");
+
     if (networkData) {
       debugger;
       const patientFactory = web3.eth.Contract(System.abi, networkData.address);
       patientFactory.methods
-        .AdicionarPaciente(
+        .AdicionarPacientePersonal1(
           newAccount.address,
           values.name,
           values.cpf,
@@ -154,7 +156,7 @@ const ProviderPage = ({ ...props }) => {
         .AdicionarPacienteAddress1(
           newAccount.address,
           values.bairro,
-          values.lougradouro,
+          values.logradouro,
           values.numero,
           values.complemento,
           values.referencia,
@@ -179,7 +181,7 @@ const ProviderPage = ({ ...props }) => {
           values.nome_do_pai,
           values.estado_civil,
           values.NIS_PIS_PASEP,
-          "465846546", // Número do prontuario vindo do CADSUS
+          nDoProntuario, // Número do prontuario vindo do CADSUS
           values.ocupacao,
           values.escolaridade,
           values.tipo_sanguineo
@@ -279,7 +281,7 @@ const ProviderPage = ({ ...props }) => {
               <Form.Item name="NIS_PIS_PASEP" label="Número do NIS/PIS/PASEP">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
-              <Form.Item name="ocupacão" label="Ocupação">
+              <Form.Item name="ocupacao" label="Ocupação">
                 <Input style={{ width: "100%" }} />
               </Form.Item>
               <Form.Item name="escolaridade" label="Escolaridade">

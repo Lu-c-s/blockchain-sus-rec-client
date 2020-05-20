@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu, Button } from "antd";
-import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import { PieChartOutlined } from "@ant-design/icons";
 import Web3 from "web3";
-import System from "../abis/System.json";
+import Paciente from "../abis/Paciente.json";
 import EthCrypto from "eth-crypto";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -39,22 +39,25 @@ const PatientPage = (props) => {
   const getPatientInfo = async () => {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
-    const networkData = System.networks[networkId];
+    const networkData = Paciente.networks[networkId];
 
     if (networkData) {
       const patientControl = new web3.eth.Contract(
-        System.abi,
+        Paciente.abi,
         networkData.address
       );
 
       if (key) {
         const publicKey = await EthCrypto.publicKeyByPrivateKey(key);
         const toAddress = EthCrypto.publicKey.toAddress(publicKey);
-        debugger;
+
         let data = await patientControl.methods.pacientes(toAddress).call();
-        let { userProntuario } = data;
+
+        console.log(data);
+        let userProntuario = data;
 
         for (let field in userProntuario) {
+          console.log(field);
           if (
             userProntuario.hasOwnProperty(field) &&
             !Number.isInteger(+field) &&
@@ -68,6 +71,8 @@ const PatientPage = (props) => {
             delete userProntuario[field];
           }
         }
+
+        console.log("f", userProntuario);
         setPatientData(userProntuario);
       }
     }

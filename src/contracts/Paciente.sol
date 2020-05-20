@@ -1,51 +1,53 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.6.7;
 pragma experimental ABIEncoderV2;
 
-contract System {
-    struct Prontuario {
-        string name;
-        string cpf;
-        string nome_social;
-        string dt_nasc;
-        string sexo;
-        string cor_raca; 
-        string rg;
-        string nacionalidade;
-        string municipio;
-        string telefone; 
-        string email;
-        string pais;
-        string orientacao_sexual;
-        string identidade_de_genero;
-        string cep; 
-        string estado; 
-        string bairro; 
-        string logradouro;
-        string numero; 
-        string complemento;
-        string referencia;
-        string area;
-        string microarea;
-        string nome_da_mae;
-        string nome_do_pai;
-        string estado_civil;
-        string NIS_PIS_PASEP;
-        string n_prontuario;
-        string ocupacao; 
-        string escolaridade;
-        string tipo_sanguineo; 
-        
+import './Prontuario.sol';
+
+contract Paciente {
+   
+    struct PacienteData {    
+        Prontuario.data userProntuario;      
+    }
+
+    mapping(address => PacienteData) public pacientes;
+
+    function AdicionarPaciente(address _userAddress , string[] memory userData) public{
+        pacientes[_userAddress].userProntuario.name = userData[0];
+        pacientes[_userAddress].userProntuario.cpf = userData[1];
+        pacientes[_userAddress].userProntuario.rg = userData[2];
+        pacientes[_userAddress].userProntuario.nome_social = userData[3];
+        pacientes[_userAddress].userProntuario.dt_nasc = userData[4];
+        pacientes[_userAddress].userProntuario.sexo = userData[5];
+        pacientes[_userAddress].userProntuario.cor_raca = userData[6];
+        pacientes[_userAddress].userProntuario.nacionalidade = userData[7];
+        pacientes[_userAddress].userProntuario.municipio = userData[8];
+        pacientes[_userAddress].userProntuario.telefone = userData[9];
+        pacientes[_userAddress].userProntuario.email = userData[10];
+        pacientes[_userAddress].userProntuario.pais = userData[11];
+        pacientes[_userAddress].userProntuario.cep = userData[12];
+        pacientes[_userAddress].userProntuario.estado = userData[13];
+        pacientes[_userAddress].userProntuario.orientacao_sexual = userData[14];
+        pacientes[_userAddress].userProntuario.identidade_de_genero = userData[15];
+        pacientes[_userAddress].userProntuario.bairro = userData[16];
+        pacientes[_userAddress].userProntuario.logradouro = userData[17];
+        pacientes[_userAddress].userProntuario.numero = userData[18];
+        pacientes[_userAddress].userProntuario.complemento = userData[19];
+        pacientes[_userAddress].userProntuario.referencia = userData[20];
+        pacientes[_userAddress].userProntuario.area = userData[21];
+        pacientes[_userAddress].userProntuario.microarea = userData[22];
+        pacientes[_userAddress].userProntuario.nome_da_mae = userData[23];
+        pacientes[_userAddress].userProntuario.nome_do_pai = userData[24];
+        pacientes[_userAddress].userProntuario.estado_civil = userData[25];
+        pacientes[_userAddress].userProntuario.NIS_PIS_PASEP = userData[26];        
+        pacientes[_userAddress].userProntuario.ocupacao = userData[27];
+        pacientes[_userAddress].userProntuario.escolaridade = userData[28];
+        pacientes[_userAddress].userProntuario.tipo_sanguineo = userData[29];        
+        pacientes[_userAddress].userProntuario.n_prontuario = userData[30];
     }
 
 
-    struct Paciente {
-        address userAddress;
-        Prontuario userProntuario;      
-    }
 
-    mapping(address => Paciente) public pacientes;
-
-    function AdicionarPacientePersonal1(address _userAddress,
+    /*function AdicionarPacientePersonal1(address _userAddress,
         string memory _name,
         string memory _cpf,
         string memory _rg,
@@ -133,6 +135,6 @@ contract System {
         pacientes[_userAddress].userProntuario.ocupacao = _ocupacao;
         pacientes[_userAddress].userProntuario.escolaridade = _escolaridade;
         pacientes[_userAddress].userProntuario.tipo_sanguineo = _tipo_sanguineo;
-    }
+    }*/
 
 }

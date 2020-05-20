@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
-import {
-  Form,
-  Input,
-  Tooltip,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from "antd";
+import { Form, Input, Button } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 import Web3 from "web3";
-import System from "../abis/System.json";
+import Paciente from "../abis/Paciente.json";
 import EthCrypto from "eth-crypto";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -80,7 +69,7 @@ const ProviderPage = ({ ...props }) => {
   const signToPatientContract = async (values) => {
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
-    const networkData = System.networks[networkId];
+    const networkData = Paciente.networks[networkId];
     const accounts = await web3.eth.getAccounts();
 
     //Create a new public/private key pair
@@ -104,9 +93,20 @@ const ProviderPage = ({ ...props }) => {
     const nDoProntuario = await encryptData(userPublicKey, "XXXXXXXXXXX");
 
     if (networkData) {
-      debugger;
-      const patientFactory = web3.eth.Contract(System.abi, networkData.address);
+      const patientFactory = new web3.eth.Contract(
+        Paciente.abi,
+        networkData.address
+      );
+
+      console.log(patientFactory);
+
+      let valuesArray = Object.values(values);
+
       patientFactory.methods
+        .AdicionarPaciente(newAccount.address, [...valuesArray, nDoProntuario])
+        .send({ from: accounts[0] });
+
+      /* patientFactory.methods
         .AdicionarPacientePersonal1(
           newAccount.address,
           values.name,
@@ -126,7 +126,7 @@ const ProviderPage = ({ ...props }) => {
         });
 
       const patientFactory2 = web3.eth.Contract(
-        System.abi,
+        Paciente.abi,
         networkData.address
       );
       patientFactory.methods
@@ -149,7 +149,7 @@ const ProviderPage = ({ ...props }) => {
         });
 
       const patientFactory3 = web3.eth.Contract(
-        System.abi,
+        Paciente.abi,
         networkData.address
       );
       patientFactory.methods
@@ -171,7 +171,7 @@ const ProviderPage = ({ ...props }) => {
         });
 
       const patientFactory4 = web3.eth.Contract(
-        System.abi,
+        Paciente.abi,
         networkData.address
       );
       patientFactory.methods
@@ -191,14 +191,7 @@ const ProviderPage = ({ ...props }) => {
         })
         .once("receipt", (receipt) => {
           console.log("receipt", receipt);
-        });
-
-      console.log(
-        patientFactory,
-        patientFactory2,
-        patientFactory3,
-        patientFactory4
-      );
+        });    */
     }
   };
 

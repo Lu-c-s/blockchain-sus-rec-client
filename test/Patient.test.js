@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-restricted-globals */
+const EthCrypto = require("eth-crypto")
 const Paciente = artifacts.require("./Paciente.sol");
 
 require("chai").use(require("chai-as-promised")).should();
@@ -13,7 +14,15 @@ contract("Paciente", ([owner]) => {
 
   describe("patient", async () => {
     before(async () => {
-      result = await patient.methods.adicionarPaciente(newAddress, [
+      const newAccount = await web3.eth.accounts.create();
+
+      console.log(newAccount)
+
+      const userPublicKey = await EthCrypto.publicKeyByPrivateKey(
+        newAccount.privateKey
+      );
+
+      result = await patient.AdicionarPaciente(userPublicKey, [
         "José Pereira",
         "034.456.864-45",
         "28799999",
@@ -49,6 +58,7 @@ contract("Paciente", ([owner]) => {
 
     it("creates a patient", async () => {
       // SUCCESS
+      const event = result.logs[0].args
       assert.equal(event.name, "José Pereira", "name is correct");
       assert.equal(event.cpf, "034.456.864-45", "cpf is correct");
       assert.equal(event.rg,"28799999", "rg is corrent");

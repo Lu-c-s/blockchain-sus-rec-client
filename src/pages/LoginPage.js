@@ -67,14 +67,14 @@ const NormalLoginForm = (props) => {
           }}
         >
           <Link to="/patient">
-            <Button>
+            <Button size="large">
               {" "}
               <UserOutlined />
               Paciente
             </Button>
           </Link>
           <Link to="/provider">
-            <Button>
+            <Button size="large">
               {" "}
               <LockOutlined />
               Profissional da saúde

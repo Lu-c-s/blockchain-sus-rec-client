@@ -16,13 +16,7 @@ contract("Paciente", ([owner]) => {
     before(async () => {
       const newAccount = await web3.eth.accounts.create();
 
-      console.log(newAccount)
-
-      const userPublicKey = await EthCrypto.publicKeyByPrivateKey(
-        newAccount.privateKey
-      );
-
-      result = await patient.AdicionarPaciente(userPublicKey, [
+      result = await patient.AdicionarPaciente(newAccount.address, [
         "José Pereira",
         "034.456.864-45",
         "28799999",

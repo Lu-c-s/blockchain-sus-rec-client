@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
+import { Form, Input, Button, Checkbox } from "antd";
 import Web3 from "web3";
 import "./LoginPage.css";
 
 const NormalLoginForm = (props) => {
-  const ganacheNode = {
-    nodeUrl: "https://localhost:7545",
-    chainId: 5777,
-  };
-
-  /*const portis = new Portis(
-    "4b237b61-fc07-4bbb-9e7c-517aceef660e",
-    ganacheNode
-  );
-  const web3 = new Web3(portis.provider);*/
+  const history = useHistory();
 
   useEffect(() => {
     (async function loadAllData() {
@@ -36,6 +27,34 @@ const NormalLoginForm = (props) => {
     }
   };
 
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+  };
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+  };
+
+  const onFinish = async (values) => {
+    const response = await fetch("/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...values }),
+    });
+
+    if (response.status === 200) {
+      history.push("/patient");
+    } else {
+      alert("Login ou senha incorreto");
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <div className="login-page">
       <div
@@ -50,37 +69,49 @@ const NormalLoginForm = (props) => {
           left: 0,
         }}
       >
-        <h1>Sistema de Prontuário em Blockchain</h1>
+        <h1 style={{ marginBottom: 60 }}>
+          Sistema de Prontuário em Blockchain
+        </h1>
 
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            height: 450,
-            justifyContent: "space-around",
-            alignItems: "center",
-            position: "absolute",
-            flexDirection: "row",
-
-            top: 50,
-            left: 0,
-          }}
+        <Form
+          {...layout}
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
-          <Link to="/patient">
-            <Button size="large">
-              {" "}
-              <UserOutlined />
-              Paciente
+          <Form.Item
+            label="Usuário"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Por favor coloque o nome de usuário!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Senha"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Por favor coloque a sua senha!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button type="secondary" htmlType="submit">
+              Submit
             </Button>
-          </Link>
-          <Link to="/provider">
-            <Button size="large">
-              {" "}
-              <LockOutlined />
-              Profissional da saúde
-            </Button>
-          </Link>
-        </div>
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "http://Lu-c-s.github.io/blockchain-sus-rec-client",
+  "proxy": "http://localhost:5000/",
   "dependencies": {
     "@ant-design/icons": "^4.0.5",
     "@portis/web3": "^2.0.0-beta.55",

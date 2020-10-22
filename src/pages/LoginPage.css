@@ -13,6 +13,11 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.ant-input-affix-wrapper > input.ant-input {
+  width: 500px;
+}
+
 .login-page .login-form-forgot {
   float: right;
 }

@@ -106,58 +106,64 @@ const PatientPage = (props) => {
             style={{ padding: 24, minHeight: 360 }}
           >
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <p>Chave privada</p>
-              <input
-                value={key}
-                style={{ width: 500 }}
-                onChange={(event) => setKey(event.target.value)}
-              />
-              <Button
-                style={{ width: 70, marginTop: 20 }}
-                onClick={getPatientInfo}
-              >
-                Entrar
-              </Button>
-              {patientData && Object.keys(patientData).length !== 0 ? (
+              {patientData && (
                 <>
-                  <h3>Dados Pessoais</h3>
-                  <p>Name: {patientData.name}</p>
-                  <p>CPF: {patientData.cpf}</p>
-                  <p>RG: {patientData.rg}</p>
-                  <p>Nome social: {patientData.nome_social}</p>
-                  <p>Data de Nascimento: {patientData.dt_nasc}</p>
-                  <p>Sexo: {patientData.sexo}</p>
-                  <p>Cor/Raça: {patientData.cor_raca}</p>
-                  <p>Nacionalidade: {patientData.nacionalidade}</p>
-                  <p>Telefone: {patientData.telefone}</p>
-                  <p>E-mail: {patientData.email}</p>
-                  <p>Orientação Sexual: {patientData.orientacao_sexual}</p>
-                  <p>
-                    Identidade de Gênero: {patientData.identidade_de_genero}
-                  </p>
-                  <p>Nome da mãe: {patientData.nome_da_mae}</p>
-                  <p>Nome do pai: {patientData.nome_do_pai}</p>
-                  <p>Estado Civil: {patientData.estado_civil}</p>
-                  <p>Número do NIS/PIS/PASEP: {patientData.NIS_PIS_PASEP}</p>
-                  <p>Ocupação: {patientData.ocupacao}</p>
-                  <p>Escolaridade: {patientData.escolaridade}</p>
-                  <p>Tipo Sanguineo: {patientData.tipo_sanguineo}</p>
+                  <p>Chave privada</p>
+                  <input
+                    value={key}
+                    style={{ width: 500 }}
+                    onChange={(event) => setKey(event.target.value)}
+                  />
+                  <Button
+                    style={{ width: 70, marginTop: 20 }}
+                    onClick={getPatientInfo}
+                  >
+                    Entrar
+                  </Button>
+                  {Object.keys(patientData).length !== 0 ? (
+                    <>
+                      <h3>Dados Pessoais</h3>
+                      <p>Name: {patientData.name}</p>
+                      <p>CPF: {patientData.cpf}</p>
+                      <p>RG: {patientData.rg}</p>
+                      <p>Nome social: {patientData.nome_social}</p>
+                      <p>Data de Nascimento: {patientData.dt_nasc}</p>
+                      <p>Sexo: {patientData.sexo}</p>
+                      <p>Cor/Raça: {patientData.cor_raca}</p>
+                      <p>Nacionalidade: {patientData.nacionalidade}</p>
+                      <p>Telefone: {patientData.telefone}</p>
+                      <p>E-mail: {patientData.email}</p>
+                      <p>Orientação Sexual: {patientData.orientacao_sexual}</p>
+                      <p>
+                        Identidade de Gênero: {patientData.identidade_de_genero}
+                      </p>
+                      <p>Nome da mãe: {patientData.nome_da_mae}</p>
+                      <p>Nome do pai: {patientData.nome_do_pai}</p>
+                      <p>Estado Civil: {patientData.estado_civil}</p>
+                      <p>
+                        Número do NIS/PIS/PASEP: {patientData.NIS_PIS_PASEP}
+                      </p>
+                      <p>Ocupação: {patientData.ocupacao}</p>
+                      <p>Escolaridade: {patientData.escolaridade}</p>
+                      <p>Tipo Sanguineo: {patientData.tipo_sanguineo}</p>
 
-                  <h3>Endereço</h3>
+                      <h3>Endereço</h3>
 
-                  <p>País: {patientData.pais}</p>
-                  <p>Estado: {patientData.estado}</p>
-                  <p>Municipio: {patientData.municipio}</p>
-                  <p>Bairro: {patientData.bairro}</p>
-                  <p>Logradouro: {patientData.logradouro}</p>
-                  <p>Número: {patientData.numero}</p>
-                  <p>CEP: {patientData.cep}</p>
-                  <p>Complemento: {patientData.complemento}</p>
-                  <p>Referência: {patientData.referencia}</p>
-                  <p>Área: {patientData.area}</p>
-                  <p>Microárea: {patientData.microarea}</p>
+                      <p>País: {patientData.pais}</p>
+                      <p>Estado: {patientData.estado}</p>
+                      <p>Municipio: {patientData.municipio}</p>
+                      <p>Bairro: {patientData.bairro}</p>
+                      <p>Logradouro: {patientData.logradouro}</p>
+                      <p>Número: {patientData.numero}</p>
+                      <p>CEP: {patientData.cep}</p>
+                      <p>Complemento: {patientData.complemento}</p>
+                      <p>Referência: {patientData.referencia}</p>
+                      <p>Área: {patientData.area}</p>
+                      <p>Microárea: {patientData.microarea}</p>
+                    </>
+                  ) : null}
                 </>
-              ) : null}
+              )}
             </div>
           </div>
         </Content>

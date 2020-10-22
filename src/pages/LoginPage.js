@@ -47,7 +47,7 @@ const NormalLoginForm = (props) => {
     if (response.status === 200) {
       history.push("/patient");
     } else {
-      alert("Login ou senha incorreto");
+      alert("Chave privada não cadastrada");
     }
   };
 
@@ -81,20 +81,7 @@ const NormalLoginForm = (props) => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label="Usuário"
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: "Por favor coloque o nome de usuário!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="Senha"
+            label="Chave privada"
             name="password"
             rules={[
               {
@@ -108,7 +95,7 @@ const NormalLoginForm = (props) => {
 
           <Form.Item {...tailLayout}>
             <Button type="secondary" htmlType="submit">
-              Submit
+              Entrar
             </Button>
           </Form.Item>
         </Form>

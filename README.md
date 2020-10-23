@@ -21,7 +21,7 @@ truffle deploy
 
 ## Criação do banco de dados MySQL
 
-Criar o banco chamado 'rds' no MySQL. <br />
+Criar um schema chamado 'rds' no MySQL. <br />
 
 Executa o script na pasta cadsus/sripts para criaçao da tabela pacientes.
 

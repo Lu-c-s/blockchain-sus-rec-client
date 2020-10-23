@@ -19,6 +19,12 @@ Com o ganache rodando abrir o terminal na pasta do projeto e executar os comando
 truffle compile <br/>
 truffle deploy
 
+## Criação do banco de dados MySQL
+
+Criar o banco chamado 'rds' no MySQL. <br />
+
+Executa o script na pasta cadsus/sripts para criaçao da tabela pacientes.
+
 # Rodando o projeto 
 ## Rodando o frontend
 em outro terminal na pasta principal do projeto, executar os comandos: <br/>

@@ -28,11 +28,11 @@ const NormalLoginForm = (props) => {
   };
 
   const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 18 },
   };
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: { offset: 0, span: 0 },
   };
 
   const onFinish = async (values) => {
@@ -73,9 +73,23 @@ const NormalLoginForm = (props) => {
           Sistema de Prontuário em Blockchain
         </h1>
 
+        <div
+          style={{
+            display: `flex`,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 60,
+          }}
+        >
+          <h1 style={{ fontSize: 40, marginBottom: -10 }}>RDS</h1>
+          <h2>Rede Distruibuída de Saúde</h2>
+        </div>
+
         <Form
           {...layout}
           name="basic"
+          style={{ display: "flex", justifyContent: "center" }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}

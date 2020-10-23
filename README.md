@@ -1,35 +1,35 @@
-## Guia de instalação
-# Pré-requisitos
+# Guia de instalação
+## Pré-requisitos
 * Node.js
 * Ganache
 * MySQL
 * MetaMask
 * Editor de texto
 # Instalação do node modules
-# Instalação do node modules do projeto front-end
+## Instalação do node modules do projeto front-end
 npm install <br/>
 
-# Instalação do node modules projeto back-end
+## Instalação do node modules projeto back-end
 cd cadsus <br/>
 npm install <br/>
 
-# Deploy dos contratos na blockchain
+## Deploy dos contratos na blockchain
 Com o ganache rodando abrir o terminal na pasta do projeto e executar os comandos: <br/>
 
 truffle compile <br/>
 truffle deploy
 
-## Rodando o projeto 
-# Rodando o frontend
+# Rodando o projeto 
+## Rodando o frontend
 em outro terminal na pasta principal do projeto, executar os comandos: <br/>
 
 npm start <br/>
 
-# Rodando o backend
+## Rodando o backend
 cd cadsus <br/>
 npm run start:dev<br/>
 
-# Rodando o Ganache
+## Rodando o Ganache
 Basta abrir o programa e executar um quick start com as configurações padrões para a Blockchain Ethereum.<br/>
 
 ## Testando a funcionalidade de profissional da saúde
@@ -43,7 +43,7 @@ Aceitar a transação no metamask.<br/>
 ## Testando a funcionalidade de paciente
 Entrar com a chave privada fornecida após o cadastro.
 
-# Rodando os testes do projeto
+## Rodando os testes do projeto
 Na pasta principal rodar o comando:<br/>
 
 npm run test

@@ -23,7 +23,7 @@ truffle deploy
 
 Criar um schema chamado 'rds' no MySQL. <br />
 
-Executa o script na pasta cadsus/sripts para criaçao da tabela pacientes.
+Executa o script na pasta cadsus/scripts para criaçao da tabela pacientes.
 
 # Rodando o projeto 
 ## Rodando o frontend

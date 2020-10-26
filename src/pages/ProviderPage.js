@@ -34,6 +34,7 @@ const tailFormItemLayout = {
 const ProviderPage = ({ ...props }) => {
   const [Collapsed, setCollapsed] = useState(false);
   const [account, setAccount] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async function loadAllData() {
@@ -67,44 +68,82 @@ const ProviderPage = ({ ...props }) => {
   };
 
   const signToPatientContract = async (values) => {
+    setError(null);
     const web3 = window.web3;
     const networkId = await web3.eth.net.getId();
     const networkData = Paciente.networks[networkId];
     const accounts = await web3.eth.getAccounts();
 
-    //Create a new public/private key pair
-    const newAccount = web3.eth.accounts.create();
+    console.log("valores inseridos", values);
+    //Create patient in cadsus
+    try {
+      await fetch("/create", {
+        method: "POST",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((res) => res.json())
+        .then(async (result) => {
+          console.log(result);
+          if (result.hasOwnProperty("errMsg")) {
+            setError(result.errMsg);
+          }
 
-    const userPublicKey = EthCrypto.publicKeyByPrivateKey(
-      newAccount.privateKey
-    );
+          if (result && result.n_prontuario) {
+            console.log(
+              "Prontuário número ",
+              result.n_prontuario,
+              " cadastrado no cadSUS"
+            );
+            //Create a new public/private key pair
+            const newAccount = web3.eth.accounts.create();
 
-    setAccount({
-      publicKey: userPublicKey,
-      privateKey: newAccount.privateKey,
-    });
-    //Encrypt all objects from values object
-    for (var key in values) {
-      if (values.hasOwnProperty(key)) {
-        values[key] = await encryptData(userPublicKey, values[key]);
-      }
-    }
+            const userPublicKey = EthCrypto.publicKeyByPrivateKey(
+              newAccount.privateKey
+            );
 
-    const nDoProntuario = await encryptData(userPublicKey, "XXXXXXXXXXX");
+            setAccount({
+              publicKey: userPublicKey,
+              privateKey: newAccount.privateKey,
+            });
+            //Encrypt all objects from values object
+            for (var key in values) {
+              if (values.hasOwnProperty(key)) {
+                values[key] = await encryptData(userPublicKey, values[key]);
+              }
+            }
 
-    if (networkData) {
-      const patientFactory = new web3.eth.Contract(
-        Paciente.abi,
-        networkData.address
-      );
+            const nDoProntuario = await encryptData(
+              userPublicKey,
+              result.n_prontuario
+            );
 
-      console.log(patientFactory);
+            if (networkData) {
+              const patientFactory = new web3.eth.Contract(
+                Paciente.abi,
+                networkData.address
+              );
 
-      let valuesArray = Object.values(values);
+              console.log(patientFactory);
 
-      patientFactory.methods
-        .AdicionarPaciente(newAccount.address, [...valuesArray, nDoProntuario])
-        .send({ from: accounts[0] });
+              let valuesArray = Object.values(values);
+
+              patientFactory.methods
+                .AdicionarPaciente(newAccount.address, [
+                  ...valuesArray,
+                  nDoProntuario,
+                ])
+                .send({ from: accounts[0] });
+            }
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    } catch (err) {
+      console.log(err, err.errMsg);
     }
   };
 
@@ -241,6 +280,7 @@ const ProviderPage = ({ ...props }) => {
             <h2>Generated Keys: </h2>
             <p>public = {account.publicKey}</p>
             <p>private = {account.privateKey}</p>
+            <p>{error}</p>
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}></Footer>

@@ -3,6 +3,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { Form, Input, Button, Checkbox } from "antd";
 import Web3 from "web3";
+import Paciente from "../abis/Paciente.json";
 import "./LoginPage.css";
 
 const NormalLoginForm = (props) => {
@@ -25,34 +26,6 @@ const NormalLoginForm = (props) => {
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
     }
-  };
-
-  const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 18 },
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 0, span: 0 },
-  };
-
-  const onFinish = async (values) => {
-    const response = await fetch("/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...values }),
-    });
-
-    if (response.status === 200) {
-      history.push("/patient");
-    } else {
-      alert("Chave privada não cadastrada");
-    }
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -86,33 +59,24 @@ const NormalLoginForm = (props) => {
           <h2>Rede Distruibuída de Saúde</h2>
         </div>
 
-        <Form
-          {...layout}
-          name="basic"
-          style={{ display: "flex", justifyContent: "center" }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "100%",
+          }}
         >
-          <Form.Item
-            label="Chave privada"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Por favor coloque a sua senha!",
-              },
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Button type="secondary" htmlType="submit">
-              Entrar
+          <Link to="/patient">
+            <Button type="secondary" size="large" htmlType="submit">
+              Paciente
             </Button>
-          </Form.Item>
-        </Form>
+          </Link>
+          <Link to="/provider">
+            <Button type="secondary" size="large" htmlType="submit">
+              Profissional da saúde
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

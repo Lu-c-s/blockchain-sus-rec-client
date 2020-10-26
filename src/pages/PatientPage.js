@@ -53,11 +53,9 @@ const PatientPage = (props) => {
 
         let data = await patientControl.methods.pacientes(toAddress).call();
 
-        console.log(data);
         let userProntuario = data;
 
         for (let field in userProntuario) {
-          console.log(field);
           if (
             userProntuario.hasOwnProperty(field) &&
             !Number.isInteger(+field) &&

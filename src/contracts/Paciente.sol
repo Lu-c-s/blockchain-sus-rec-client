@@ -11,6 +11,12 @@ contract Paciente {
 
     mapping(address => PacienteData) public pacientes;
 
+    event PacienteCriado(
+        address _userAddress,
+        string name,
+        string cpf       
+    );
+
     function AdicionarPaciente(address _userAddress , string[] memory userData) public{
         pacientes[_userAddress].userProntuario.name = userData[0];
         pacientes[_userAddress].userProntuario.cpf = userData[1];
@@ -43,5 +49,11 @@ contract Paciente {
         pacientes[_userAddress].userProntuario.area = userData[28];
         pacientes[_userAddress].userProntuario.microarea = userData[29];        
         pacientes[_userAddress].userProntuario.n_prontuario = userData[30];
+
+        emit PacienteCriado(
+            _userAddress,
+            userData[0], 
+            userData[1]
+        );
     }
 }
